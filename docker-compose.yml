@@ -23,7 +23,7 @@ services:
   nginx:
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.nginx-dev1.rule=Host(`site01.local`)"
+      - "traefik.http.routers.nginx-dev1.rule=Host(`site01.localhost`)"
       - "traefik.http.services.nginx-dev1.loadbalancer.server.port=8080"
       - "traefik.docker.network=gateway"
     container_name: site01_nginx
