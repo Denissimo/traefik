@@ -12,48 +12,13 @@ networks:
 services:
   traefik:
     image: traefik:v2.2
+    container_name: "web_traefik"
     volumes:
-      - ./traefik.yml:/traefik.yml:ro
+      - ./traefik.yml:/opt/traefik/traefik.yml:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
     ports:
-      - 8080:8080
-    restart: always
-    networks:
-      - default
-  nginx:
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.nginx-dev1.rule=Host(`site01.localhost`)"
-      - "traefik.http.services.nginx-dev1.loadbalancer.server.port=8080"
-      - "traefik.docker.network=gateway"
-    container_name: site01_nginx
-    hostname: site01.localhost
-    # используем последний стабильный образ nginx
-    image: nginx:latest
-    # маршрутизируем порты
-    ports:
       - "80:80"
-      - "443:443"
-    # монтируем директории, слева директории на основной машине, справа - куда они монтируются в контейнере
-    volumes:
-      - ./hosts:/etc/nginx/conf.d
-      - ./www:/var/www
-      - ./logs:/var/log/nginx
-    # nginx должен общаться с php контейнером
-    environment:
-      PHP_INI_SCAN_DIR: "/usr/local/etc/php/custom.d:/usr/local/etc/php/conf.d"
-    links:
-      - php
-    networks:
-      - default
-      - dev1
-  php:
-    container_name: site01_php
-    # у нас свой образ для PHP, указываем путь к нему и говорим что его надо собрать
-    build: ./images/php
-    # монтируем директорию с проектами
-    volumes:
-      - ./www:/var/www
-      - ./images/php/:/usr/local/etc/php/conf.d/
+      - "8080:8080"
+    restart: always
     networks:
       - default
