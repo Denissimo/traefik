@@ -15,11 +15,27 @@ services:
     image: traefik:v2.2
     container_name: traefik
     restart: unless-stopped
+    command:
+      # - "--log.level=DEBUG"
+      - "--api=true"
+      - "--api.dashboard=true"
+      - "--api.insecure=true" # Don't do that in production
+      - "--providers.docker"
+      - "--entrypoints.web.address=:80"
+      # add pilot token service
+      # - "--pilot.token=3d1bd97f-cb9d-4cde-8112-77ce2f5abc92"
+      # install plugin rewrite body
+      # - "--experimental.plugins.plugin-rewrite.modulename=github.com/traefik/plugin-rewritebody"
+      # - "--experimental.plugins.plugin-rewrite.version=v0.3.1"
     volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./data/traefik.yml:/traefik.yml:ro
-      - ./data/acme.json:/acme.json
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+        read_only: true
+#      - /etc/localtime:/etc/localtime:ro
+#      - /var/run/docker.sock:/var/run/docker.sock:ro
+#      - ./data/traefik.yml:/traefik.yml:ro
+#      - ./data/acme.json:/acme.json
     ports:
       - "80:80"
       - "8080:8080"
@@ -28,7 +44,7 @@ services:
       portainer-hidden: "true"
       traefik.enable: "true"
       traefik.http.services.traefik-8080.loadbalancer.server.port: "8080"
-      traefik.http.routers.traefik-http.entrypoints: "http"
+#      traefik.http.routers.traefik-http.entrypoints: "http"
       traefik.http.routers.traefik-http.rule: "Host(`traefik.localhost`)"
       traefik.http.routers.traefik-http.service: "traefik-8080"
     networks:
