@@ -11,14 +11,25 @@ networks:
 
 services:
   traefik:
+    hostname: traefik
     image: traefik:v2.2
-    container_name: "web_traefik"
+    container_name: traefik
+    restart: unless-stopped
     volumes:
-      - ./traefik.yml:/opt/traefik/traefik.yml:ro
+      - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./data/traefik.yml:/traefik.yml:ro
+      - ./data/acme.json:/acme.json
     ports:
       - "80:80"
       - "8080:8080"
-    restart: always
+      - "443:443"
+    labels:
+      portainer-hidden: "true"
+      traefik.enable: "true"
+      traefik.http.services.traefik-8080.loadbalancer.server.port: "8080"
+      traefik.http.routers.traefik-http.entrypoints: "http"
+      traefik.http.routers.traefik-http.rule: "Host(`traefik.localhost`)"
+      traefik.http.routers.traefik-http.service: "traefik-8080"
     networks:
       - default
