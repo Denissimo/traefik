@@ -1,5 +1,8 @@
 docker-compose down
 cd ..
+cd ace.localhost
+docker-compose down
+cd ..
 cd site01.localhost
 docker-compose down
 cd ..

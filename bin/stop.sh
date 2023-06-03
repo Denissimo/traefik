@@ -1,5 +1,8 @@
 docker-compose stop
 cd ..
+cd ace.localhost
+docker-compose stop
+cd ..
 cd site01.localhost
 docker-compose stop
 cd ..
