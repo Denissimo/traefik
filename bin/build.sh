@@ -3,6 +3,9 @@ cd ..
 cd ace.localhost
 docker-compose build
 cd ..
+cd kouriakova.localhost
+docker-compose build
+cd ..
 cd site01.localhost
 docker-compose build
 cd ..

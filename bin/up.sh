@@ -3,6 +3,9 @@ cd ..
 cd ace.localhost
 docker-compose up -d --remove-orphans
 cd ..
+cd kouriakova.localhost
+docker-compose up -d --remove-orphans
+cd ..
 cd site01.localhost
 docker-compose up -d --remove-orphans
 cd ..
