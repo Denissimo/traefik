@@ -1,5 +1,11 @@
 cd ..
+cd rabbit.localhost
+docker-compose stop
+cd ..
 cd ace.localhost
+docker-compose stop
+cd ..
+cd flowers.localhost
 docker-compose stop
 cd ..
 cd kouriakova.localhost
